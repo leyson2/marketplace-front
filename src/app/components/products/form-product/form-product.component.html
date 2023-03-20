@@ -1,0 +1,90 @@
+<div class="card">
+  <div class="card-header">
+    <h5 class="card-title">Add New Product</h5>
+  </div>
+  <div class="card-body">
+    <form class="form" [formGroup]="productForm">
+      <div class="row">
+        <div class="col-6">
+          <label for="name">Name</label>
+          <input
+            type="text"
+            class="form-control form-control-sm"
+            formControlName="name"
+            placeholder="First name"
+            [ngClass]="{ 'is-invalid': submitted && f['name'].errors }"
+          />
+          <div class="invalid-feedback" *ngIf="submitted && f['name'].errors">
+            <div *ngIf="f['name'].errors['required']">Name is required</div>
+            <div *ngIf="f['name'].errors['maxlength']">
+              Name isn't max length 5
+            </div>
+          </div>
+        </div>
+        <div class="col-6">
+          <label for="barcode">Barcode</label>
+          <input
+            type="text"
+            class="form-control form-control-sm"
+            formControlName="barcode"
+            placeholder="Last name"
+          />
+        </div>
+        <div class="col-6">
+          <label for="salePrice">Sale price</label>
+          <input
+            type="number"
+            class="form-control form-control-sm"
+            formControlName="salePrice"
+            placeholder="First name"
+          />
+        </div>
+        <div class="col-6">
+          <label for="amount">Amount</label>
+          <input
+            type="number"
+            class="form-control form-control-sm"
+            formControlName="amount"
+            placeholder="Last name"
+          />
+        </div>
+        <div class="col-6">
+          <label for="status">Status</label>
+          <select class="form-control form-control-sm" formControlName="status">
+            <option value="true" selected>Seleccionar</option>
+            <option value="true">Activo</option>
+            <option value="false">Inactivo</option>
+          </select>
+        </div>
+        <div class="col-6">
+          <label for="imagen">Imagen</label>
+          <input
+            type="file"
+            class="form-control form-control-sm"
+            (change)="catchPhoto($event)"
+          />
+        </div>
+        <div *ngIf="imgPreview !== ''" class="col-6">
+          <label for="imagen">Imagen Previa</label><br />
+          <img [src]="imgPreview" class="fluid-img" height="100" width="120" />
+        </div>
+        <div class="col-12">
+          <button
+            type="button"
+            class="btn btn-success float-right mt-2 mr-2"
+            (click)="addProduct()"
+          >
+            Save
+          </button>
+          <button
+            class="btn btn-secondary float-right mt-2 mr-2"
+            [routerLink]="['../products']"
+          >
+            <i class="fas fa-close"></i>
+            Cancelar
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

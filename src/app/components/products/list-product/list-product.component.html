@@ -1,0 +1,64 @@
+<div class="card">
+  <div class="card-header">
+    <button class="btn btn-success float-right"  [routerLink]="['../products-form']">
+      <i class="fas fa-plus-square mr-1"></i> New product
+    </button>
+  </div>
+  <div class="card-body">
+    <table class="table table-bordered table-hover">
+      <thead class="bg-dark text-white">
+        <tr>
+          <th></th>
+          <th>Nombre</th>
+          <th>Codigo</th>
+          <th>Precio</th>
+          <th>Cantidad</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr
+          *ngFor="
+            let item of ListProducts
+              | paginate : { itemsPerPage: 5, currentPage: pCurrent }
+          "
+        >
+        <td>
+            <img src="{{item.imagen}}" class="img-fluid" height="100" width="120" />
+        </td>
+          <td>{{ item.name }}</td>
+          <td>{{ item.barcode }}</td>
+          <td>{{ item.salePrice }}</td>
+          <td>{{ item.amount }}</td>
+          <td>
+            <button
+              color="warn"
+              class="btn btn-danger btn-sm"
+              (click)="Delete(item.id)"
+            >
+              <i class="fas fa-trash mr-1"></i> Delete
+            </button>
+            <button
+              class="btn btn-primary btn-sm ml-2"
+              (click)="Delete(item.id)"
+            >
+              <i class="fas fa-edit mr-1"></i>
+              Edit
+            </button>
+          </td>
+        </tr>
+      </tbody>
+
+      <tfoot>
+        <td colspan="5">
+          <pagination-controls
+            (pageChange)="pCurrent = $event"
+            previousLabel="Anterior"
+            nextLabel="Siguiente"
+          >
+          </pagination-controls>
+        </td>
+      </tfoot>
+    </table>
+  </div>
+</div>
