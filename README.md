@@ -4,7 +4,7 @@ Fue desarrollado en  Angular version 15.1.2.
 
 ## Development server
 
-1-despues de de clonar el repositorios
+1-despues de de clonar el repositorio
 
 2-veriricar si se cuenta con node js de lo contrario descargar la ultima version e intalar angular
 
