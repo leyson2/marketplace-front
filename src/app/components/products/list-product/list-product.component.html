@@ -3,6 +3,14 @@
     <button class="btn btn-success float-right"  [routerLink]="['../products-form']">
       <i class="fas fa-plus-square mr-1"></i> New product
     </button>
+    <select class="form-control select-item" (change)="perPage()" [(ngModel)]="itemPage">
+      <option value="5">Items for page</option>
+      <option value="10">10</option>
+      <option value="15">15</option>
+      <option value="20">20</option>
+      <option value="25">25</option>
+      <option value="30">30</option>
+    </select>
   </div>
   <div class="card-body">
     <table class="table table-bordered table-hover">
@@ -10,6 +18,7 @@
         <tr>
           <th></th>
           <th>Nombre</th>
+          <th>Category</th>
           <th>Codigo</th>
           <th>Precio</th>
           <th>Cantidad</th>
@@ -20,13 +29,14 @@
         <tr
           *ngFor="
             let item of ListProducts
-              | paginate : { itemsPerPage: 5, currentPage: pCurrent }
+              | paginate : { itemsPerPage: nItems, currentPage: pCurrent }
           "
         >
         <td>
             <img src="{{item.imagen}}" class="img-fluid" height="100" width="120" />
         </td>
           <td>{{ item.name }}</td>
+          <td>{{ item.nameCategory }}</td>
           <td>{{ item.barcode }}</td>
           <td>{{ item.salePrice }}</td>
           <td>{{ item.amount }}</td>
@@ -40,7 +50,7 @@
             </button>
             <button
               class="btn btn-primary btn-sm ml-2"
-              (click)="Delete(item.id)"
+              (click)="editProduct(item.id)"
             >
               <i class="fas fa-edit mr-1"></i>
               Edit
@@ -50,7 +60,7 @@
       </tbody>
 
       <tfoot>
-        <td colspan="5">
+        <td [colSpan]="6">
           <pagination-controls
             (pageChange)="pCurrent = $event"
             previousLabel="Anterior"

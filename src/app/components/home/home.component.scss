@@ -1,0 +1,13 @@
+.table-scroll {
+  overflow-x: hidden;
+  overflow-y: visible;
+  max-height: 300px;
+}
+
+.active {
+  background-color: rgb(16, 134, 224);
+  height: 60px;
+}
+.login-btn{
+  cursor: pointer;
+}

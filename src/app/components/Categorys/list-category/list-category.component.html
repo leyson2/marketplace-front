@@ -1,0 +1,45 @@
+<div class="card">
+    <div class="card-header">
+      <button class="btn btn-success float-right"  [routerLink]="['../categorys-form']">
+        <i class="fas fa-plus-square mr-1"></i> New Category
+      </button>
+    </div>
+    <div class="card-body">
+      <table class="table table-bordered table-hover">
+        <thead class="bg-dark text-white">
+          <tr>
+            <th>Nombre</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            *ngFor="
+              let item of ListCategorys
+                | paginate : { itemsPerPage: 5, currentPage: pCurrent }">
+            <td>{{ item.name }}</td>
+            <td>
+              <button
+                color="warn"
+                class="btn btn-danger btn-sm"
+                (click)="Delete(item.id)"
+              >
+                <i class="fas fa-trash mr-1"></i> Delete
+              </button>
+            </td>
+          </tr>
+        </tbody>
+  
+        <tfoot>
+          <td colspan="5">
+            <pagination-controls
+              (pageChange)="pCurrent = $event"
+              previousLabel="Anterior"
+              nextLabel="Siguiente"
+            >
+            </pagination-controls>
+          </td>
+        </tfoot>
+      </table>
+    </div>
+  </div>

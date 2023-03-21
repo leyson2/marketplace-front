@@ -8,6 +8,48 @@
     width: 100%;
 }
 
-mat-card-title{
-   float: right;
+mat-card-header {
+    justify-content: center;
+    text-align: center;
+}
+
+.login-text {
+    text-decoration: none;
+    color: rgb(13, 13, 255) !important;
+}
+
+.btn-register {
+    background-color: #F7941D;
+}
+
+mat-card-actions {
+    justify-content: center;
+}
+
+.btn-login {
+    width: 100%;
+    background-color: black;
+    color: white !important;
+    transition: transform 1s;
+}
+
+.btn-login:hover {
+    transform: translateY(-3px);
+}
+
+.card-register {
+    width: 500px;
+}
+
+.example-full {
+    width: 220px;
+}
+
+.input-pass {
+    border: 1px solid red;
+    width: 340px !important;
+}
+
+.float-right-icon {
+    cursor: pointer;
 }

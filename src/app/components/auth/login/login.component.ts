@@ -3,26 +3,28 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Component, OnInit } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 import jwt_decode from 'jwt-decode';
+import { MustMatch } from '../validator/confirmed_validator';
+import { ShipmentService } from 'src/app/Services/shipment.service';
+import Swal from 'sweetalert2';
+import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
 })
 export class LoginComponent implements OnInit {
-  titleModal: string = 'Register';
-  btnTitle: string = 'register';
   isLogin: boolean = true;
-
   registerForm!: FormGroup;
   loginForm!: FormGroup;
-
   submitted = false;
   userData: any;
-
+  durationInSeconds = 3;
   constructor(
     public dialogRef: MatDialogRef<LoginComponent>,
     private fb: FormBuilder,
-    private _auth: AuthService
+    private _auth: AuthService,
+    private shareData: ShipmentService,
+    private _snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -31,49 +33,56 @@ export class LoginComponent implements OnInit {
   }
 
   initRegisterForm() {
-    this.registerForm = this.fb.group({
-      name: ['', Validators.required],
-      userName: ['', Validators.required],
-      lastName: ['', Validators.required],
-      address: ['', Validators.required],
-      email: ['', Validators.required],
-      password: ['', Validators.required],
-      password_confirmation: ['', Validators.required],
-    });
+    this.registerForm = this.fb.group(
+      {
+        name: ['', [Validators.required]],
+        userName: ['', [Validators.required]],
+        lastName: ['', [Validators.required]],
+        address: ['', [Validators.required]],
+        email: ['', [Validators.required, Validators.email]],
+        password: ['', [Validators.required, Validators.minLength(8)]],
+        password_confirmation: [
+          '',
+          [Validators.required, Validators.minLength(8)],
+        ],
+      },
+      { validator: MustMatch('password', 'password_confirmation') }
+    );
   }
   initLoginForm() {
     this.loginForm = this.fb.group({
       userName: ['', Validators.required],
-      password: ['', Validators.required],
+      password: ['', [Validators.required, Validators.minLength(8)]],
     });
-  }
-
-  get f() {
-    return this.registerForm.controls;
   }
 
   onRegister() {
     this.submitted = true;
     if (this.registerForm.invalid) {
+      this._snackBar.open('Por favor, complete todos los campos.','', {
+        duration: this.durationInSeconds * 1000,
+      });
       return;
     }
-    if (
-      this.registerForm.value.password ===
-      this.registerForm.value.password_confirmation
-    ) {
-      this._auth.register(this.registerForm.value).subscribe({
-        next: (res) => {
-          //this.toastr.success(res.men);
-          console.log(res);
-          // this.dialogRef.close();
-          this.isLogin = true;
-        },
-        error: (e) => {
-          //this.toastr.error('Algo salio mal');
-          alert('mal');
-        },
-      });
-    }
+    this._auth.register(this.registerForm.value).subscribe({
+      next: (res) => {
+        this.isLogin = true;
+        Swal.fire({
+          icon: 'success',
+          title: 'Login Successful',
+          showConfirmButton: false,
+          timer: 1500
+        })
+      },
+      error: (e) => {
+        Swal.fire({
+          icon: 'error',
+          title: 'Algo salio mal',
+          showConfirmButton: false,
+          timer: 1500
+        })
+      },
+    });
   }
 
   registerView() {
@@ -87,15 +96,27 @@ export class LoginComponent implements OnInit {
     }
     this._auth.login(this.loginForm.value).subscribe({
       next: (res) => {
-        //this.toastr.success(res.men);
         this.userData = jwt_decode(res.token);
-        console.log('User data', this.userData);
+        localStorage.setItem('token', res.token);
+        this.shareData.setInfoLogin(true);
         this.dialogRef.close();
+        Swal.fire({
+          position: 'top-end',
+          icon: 'success',
+          title: 'Login Successful',
+          showConfirmButton: false,
+          timer: 1500
+        })
       },
       error: (e) => {
-        //this.toastr.error('Algo salio mal');
-        alert('mal');
+        this._snackBar.open('  Usuario o Contraseña Incorrectos','', {
+          duration: this.durationInSeconds * 1000,
+        });
       },
     });
+  }
+
+  modalClose() {
+    this.dialogRef.close();
   }
 }

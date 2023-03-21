@@ -11,13 +11,13 @@
             type="text"
             class="form-control form-control-sm"
             formControlName="name"
-            placeholder="First name"
+            placeholder="Name"
             [ngClass]="{ 'is-invalid': submitted && f['name'].errors }"
           />
           <div class="invalid-feedback" *ngIf="submitted && f['name'].errors">
             <div *ngIf="f['name'].errors['required']">Name is required</div>
             <div *ngIf="f['name'].errors['maxlength']">
-              Name isn't max length 5
+              Name isn't max length 40
             </div>
           </div>
         </div>
@@ -27,8 +27,12 @@
             type="text"
             class="form-control form-control-sm"
             formControlName="barcode"
-            placeholder="Last name"
+            placeholder="Barcode"
+            [ngClass]="{ 'is-invalid': submitted && f['barcode'].errors }"
           />
+          <div class="invalid-feedback" *ngIf="submitted && f['barcode'].errors">
+            <div *ngIf="f['barcode'].errors['required']">Barcode is required</div>
+          </div>
         </div>
         <div class="col-6">
           <label for="salePrice">Sale price</label>
@@ -36,8 +40,15 @@
             type="number"
             class="form-control form-control-sm"
             formControlName="salePrice"
-            placeholder="First name"
+            placeholder="Sale price"
+            [ngClass]="{ 'is-invalid': submitted && f['salePrice'].errors }"
           />
+          <div class="invalid-feedback" *ngIf="submitted && f['salePrice'].errors">
+            <div *ngIf="f['salePrice'].errors['required']">Sale Price is required</div>
+            <div *ngIf="f['salePrice'].errors['min']">
+              Sale Price min $1
+            </div>
+          </div>
         </div>
         <div class="col-6">
           <label for="amount">Amount</label>
@@ -45,17 +56,39 @@
             type="number"
             class="form-control form-control-sm"
             formControlName="amount"
-            placeholder="Last name"
+            placeholder="Amount"
+            [ngClass]="{ 'is-invalid': submitted && f['amount'].errors }"
           />
+          <div class="invalid-feedback" *ngIf="submitted && f['amount'].errors">
+            <div *ngIf="f['amount'].errors['required']">Amount is required</div>
+            <div *ngIf="f['amount'].errors['min']">
+              Amount min 1
+            </div>
+          </div>
         </div>
         <div class="col-6">
           <label for="status">Status</label>
-          <select class="form-control form-control-sm" formControlName="status">
-            <option value="true" selected>Seleccionar</option>
+          <select class="form-control form-control-sm" formControlName="status" [ngClass]="{ 'is-invalid': submitted && f['status'].errors }">
+            <option value="true" selected>Select status</option>
             <option value="true">Activo</option>
             <option value="false">Inactivo</option>
           </select>
+          <div class="invalid-feedback" *ngIf="submitted && f['status'].errors">
+            <div *ngIf="f['status'].errors['required']">Status is required</div>
+          </div>
         </div>
+
+        <div class="col-6">
+          <label for="status">Category</label>
+          <select class="form-control form-control-sm" formControlName="fk_IdCategory" [ngClass]="{ 'is-invalid': submitted && f['fk_IdCategory'].errors }">
+            <option selected>Select category</option>
+            <option *ngFor="let category of categories" value="{{category.id}}">{{category.name}}</option>
+          </select>
+          <div class="invalid-feedback" *ngIf="submitted && f['fk_IdCategory'].errors">
+            <div *ngIf="f['fk_IdCategory'].errors['required']">Category is required</div>
+          </div>
+        </div>
+
         <div class="col-6">
           <label for="imagen">Imagen</label>
           <input
@@ -74,14 +107,15 @@
             class="btn btn-success float-right mt-2 mr-2"
             (click)="addProduct()"
           >
+          <i class="fas fa-save"></i>
             Save
           </button>
           <button
             class="btn btn-secondary float-right mt-2 mr-2"
-            [routerLink]="['../products']"
+            (click)="cancel()"
           >
             <i class="fas fa-close"></i>
-            Cancelar
+            Cancel
           </button>
         </div>
       </div>

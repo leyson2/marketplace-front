@@ -1,0 +1,70 @@
+<div class="shopping-cart section">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <h4 class="card-title">View Cart</h4>
+            </div>
+            <div class="col-12">
+                <!-- Shopping Summery -->
+                <table class="table shopping-summery">
+                    <thead>
+                        <tr class="main-hading">
+                            <th>PRODUCT</th>
+                            <th>NAME</th>
+                            <th class="text-center">UNIT PRICE</th>
+                            <th class="text-center">QUANTITY</th>
+                            <th class="text-center">TOTAL</th> 
+                            <th class="text-center"><i class="ti-trash remove-icon"></i></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let cart of cartsProduct">
+                            <td class="image" data-title="No"><img src="{{cart.imagen}}" alt="#" style="height: 100px; width:100px"></td>
+                            <td class="product-des" data-title="Description">
+                                <p class="product-name"><a href="#">{{cart.name}}</a></p>
+                                <p class="product-des">{{cart.barcode}}</p>
+                            </td>
+                            <td class="price" data-title="Price"><span>{{cart.salePrice | currency}}</span></td>
+                            <td class="qty" data-title="Qty"><!-- Input Order -->
+                                <div class="input-group">
+                                    <input type="number" min="1" (click)="onClick($event)" (keyup)="qtyValue($event)" max={{cart.amount}} id="{{cart.id}}" value="1" class="input-number" data-min="1" data-max="100">
+                                    <div class="button plus">
+                                    </div>
+                                </div>
+                                <!--/ End Input Order -->
+                            </td>
+                            <td class="total-amount" data-title="Total"><span>{{cart.salePrice * cart.qty | currency}}</span></td>
+                            <td class="action" data-title="Remove"><a (click)="DeleteItem(cart.id)" ><i class="ti-trash remove-icon"></i></a></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <!--/ End Shopping Summery -->
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                <!-- Total Amount -->
+                <div class="total-amount">
+                    <div class="row">
+                        <div class="col-lg-8 col-md-5 col-12">
+                            <div class="left">
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-7 col-12">
+                            <div class="right">
+                                <ul>
+                                    <li>Cart Subtotal<span>{{totalPay | currency}}</span></li>
+                                    <li>Shipping<span>Free</span></li>
+                                </ul>
+                                <div class="button5">
+                                    <a  class="btn">shopping</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--/ End Total Amount -->
+            </div>
+        </div>
+    </div>
+</div>

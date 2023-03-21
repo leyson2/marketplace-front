@@ -2,3 +2,9 @@
     border: 1px solid gray;
     // margin: 1px;
 }
+
+.table-scroll{
+    overflow-x:hidden;
+    overflow-y:visible;
+    max-height: 800px;
+  }
